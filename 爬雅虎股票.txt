@@ -1,0 +1,22 @@
+#-*-coding:utf-8
+import urllib
+from urllib import request
+# 爬取雅虎股票数据
+def download_stock_data(stock_list):
+    for sid in  stock_list:
+        url='http://table.finance.yahoo.com/table.csv?s='+sid
+        fname=sid+'.csv'
+        print('downoading %s form %s'%(fname,url))
+        request.urlretrieve(url,fname)
+
+def urlencode():
+    params={'score':100,'name':'爬虫基础','comment':'very good'}
+    # 将字典里面所有的键值转化为query-string
+    qs=urllib.parse.urlencode(params)
+    print(qs)
+    # 将query-string转化为字典
+    print(urllib.parse.parse_qs(qs))
+
+
+stock_list=['300001.sz','300002.sz']
+download_stock_data(stock_list)
