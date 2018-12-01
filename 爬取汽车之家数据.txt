@@ -1,0 +1,22 @@
+import requests
+from bs4 import BeautifulSoup
+reponse=requests.get(url='http://www.autohome.com.cn/news/')
+reponse.encoding=reponse.apparent_encoding
+# 转化为对象，对象才能进行正则匹配
+soup=BeautifulSoup(reponse.text,features='html.parser')
+target=soup.find(id='auto-channel-lazyload-article')
+# 找所有li标签,正则表达式,得到列表
+li_list=target.find_all('li')
+for i in li_list:
+    a=i.find('a')
+    if a:
+    # 找到a的所有属性,得到字典类
+        x=a.attrs
+        # 通过键值获取数据
+        print(x.get('href'))
+
+        h3=a.find('h3')
+        print(h3)
+
+        img=a.find('img')
+        print(img)
