@@ -1,0 +1,22 @@
+import requests
+# 登陆的用户名密码
+dict_data={
+    'password':'xxx',
+    'phone':'861555321xxxx'
+}
+# 浏览器请求头中的headers,
+headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393'}
+
+# 进入抽屉页面获取cookies
+r1=requests.get('http://dig.chouti.com',headers=headers)
+print(r1.cookies.get_dict())
+
+# 登陆带着第一个cookies并进行授权
+r2=requests.post(url='https://dig.chouti.com/login',
+ data = dict_data,headers=headers,cookies=r1.cookies.get_dict())
+
+# 带着授权之后的cookies，实现自动推荐
+r3=requests.post(url='https://dig.chouti.com/link/vote?linksId=23487951',
+                headers=headers,
+                cookies=r1.cookies.get_dict())
+print(r3.text)
