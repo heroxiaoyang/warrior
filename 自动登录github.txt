@@ -1,0 +1,28 @@
+# 自动登陆github
+import requests
+from bs4 import BeautifulSoup
+# 发送get请求，获取authenticity_token，该页面是form表单形式
+l1=requests.get('https://github.com/login')
+soup1=BeautifulSoup(l1.text,features='lxml')
+# 找到authenticity_token
+csrf=soup1.find(name='input',attrs={'name': 'authenticity_token'})
+authenticity_token=csrf.get('value')
+# 获取cookies
+c1=l1.cookies.get_dict()
+headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393'}
+
+data={
+'authenticity_token':authenticity_token,
+    'login':'384948075@qq.com',
+    'password':'xxy09211022',
+
+}
+l2=requests.post(url='https://github.com/session',
+                 data=data,
+                 headers=headers,
+                 cookies=c1)
+c1=c1.update(l2.cookies.get_dict())
+l3=requests.get(url='https://github.com/settings/repositories',
+    headers=headers,
+    cookies=c1,
+                 )
